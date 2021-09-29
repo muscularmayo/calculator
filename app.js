@@ -55,17 +55,20 @@ const buttonPress = function (e) {
     } else if (displayValue === '0') {
       displayValue = e.target.value;
       console.log(displayValue)
-
     }
     display.innerHTML = displayValue;
 
-  } else if (this.classlist[0] === "operator") {
-    if (!num1) {
-      num1 = displayValue;
+  } else if (this.classList[0] === "operator") {
+    if (!num1 && !operator) {
+      num1 = Number(displayValue);
       operator = this.value;
+      displayValue = '0'
     } else {
-
+      num2 = Number(displayValue)
+      display.innerHTML = operate(operator, num1, num2)
     }
+  } else if (this.classList[0] === "equals") {
+    return operate(operator, num1, num2)
   }
 
 }
