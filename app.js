@@ -27,33 +27,45 @@ const operate = function (operator, num1, num2) {
   }
 }
 
+//digits and operators should have different functions attached?
+//digits need to store displayValue as well as num1,num2
+//operator needs to call on those num1/num2 values
+//if an operator is hit, displayvalue shall be saved into either num1 or num2, operator shall be saved too
+//and then when equal is hit, operate(operator, num1,num2) will
 
-
-const buttons = document.querySelectorAll('button');
+const operators = document.querySelectorAll('.operator')
+const buttons = document.querySelectorAll('button')
+const digits = document.querySelectorAll('.digit');
 const display = document.querySelector('#display');
 display.innerHTML = '0';
-let displayValue = 0;
+let displayValue = '0';
+let num1;
+let num2;
+let operator;
 
 const buttonPress = function (e) {
   const nums = ['1','2','3','4','5','6','7','8','9','0']
-  let num1;
-  let num2;
+
   console.log(typeof displayValue, displayValue)
   if(nums.includes(e.target.value)) { //number button input
-    if (displayValue !== 0) {
-      let number = e.target.value + displayValue
+    if (displayValue !== '0') {
+      let number = displayValue + e.target.value
       console.log(displayValue, e.target.value, number, typeof number)
-      displayValue = displayValue + e.targetValue;
-      displayValue = Number(displayValue)
-    } else if (displayValue === 0) {
+      displayValue = number;
+    } else if (displayValue === '0') {
       displayValue = e.target.value;
       console.log(displayValue)
 
     }
     display.innerHTML = displayValue;
 
-  } else {
-    num1 = displayValue;
+  } else if (this.classlist[0] === "operator") {
+    if (!num1) {
+      num1 = displayValue;
+      operator = this.value;
+    } else {
+
+    }
   }
 
 }
