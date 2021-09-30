@@ -49,6 +49,7 @@ const buttonPress = function (e) {
   console.log(typeof displayValue, displayValue)
   if(nums.includes(e.target.value)) { //number button input
     if (displayValue !== '0') {
+      displayValue = '' + displayValue;
       let number = displayValue + e.target.value
       console.log(displayValue, e.target.value, number, typeof number)
       displayValue = number;
@@ -59,16 +60,24 @@ const buttonPress = function (e) {
     display.innerHTML = displayValue;
 
   } else if (this.classList[0] === "operator") {
-    if (!num1 && !operator) {
+    if (!num1) {
       num1 = Number(displayValue);
       operator = this.value;
       displayValue = '0'
-    } else {
+    } else if (!num2) {
       num2 = Number(displayValue)
-      display.innerHTML = operate(operator, num1, num2)
+      displayValue = operate(operator, num1, num2)
+
+      display.innerHTML = displayValue
+      displayValue ='0'
+      num1 = undefined;
+      num2 = displayValue;
+    } else {
+
     }
   } else if (this.classList[0] === "equals") {
-    return operate(operator, num1, num2)
+    display.innerHTML = operate(operator, num1, num2)
+    num1 = display.innerHTML;
   }
 
 }
