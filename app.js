@@ -60,6 +60,12 @@ const digitPress = function (e) {
   } else {
     num2 = Number(displayValue)
   }*/
+  if (num1 === undefined || operator === undefined) {
+    num1 = Number(displayValue)
+  } else {
+    num2 = Number(displayValue)
+  }
+
   display.innerHTML = displayValue;
 }
 
@@ -72,21 +78,24 @@ const clear = function (e) {
 }
 
 const operatorPress = function (e) {
-  displayValue = undefined;
-  if (num1 === undefined) {
-    num1 = Number(displayValue)
-  } else if (num1 && num2 && operator) {
+  operator = e.target.value
+
+  if (num1 && num2 && operator) {
     equalPress();
   }
+    displayValue = undefined;
+
 
 
 }
 
 const equalPress = function (e) {
+
   const result = operate(operator, num1, num2)
-  displayValue = '' + result;
-  num2 = result;
-  display.innerHTML = displayValue;
+  displayValue = undefined
+  num1 = result;
+  num2 = undefined;
+  display.innerHTML = '' + result;;
   operator = undefined;
 }
 
