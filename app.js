@@ -78,7 +78,6 @@ const clear = function (e) {
 }
 
 const operatorPress = function (e) {
-  operator = e.target.value
 
   if (num1 && num2 && operator) {
     const result = operate(operator, num1, num2)
@@ -87,7 +86,8 @@ const operatorPress = function (e) {
     num2 = undefined;
     display.innerHTML = '' + result;
   }
-    displayValue = undefined;
+  operator = e.target.value
+  displayValue = undefined;
 
 
 
