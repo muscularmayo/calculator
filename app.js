@@ -81,7 +81,11 @@ const operatorPress = function (e) {
   operator = e.target.value
 
   if (num1 && num2 && operator) {
-    equalPress();
+    const result = operate(operator, num1, num2)
+    displayValue = undefined
+    num1 = result;
+    num2 = undefined;
+    display.innerHTML = '' + result;
   }
     displayValue = undefined;
 
