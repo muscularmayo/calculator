@@ -23,6 +23,10 @@ const operate = function (operator, num1, num2) {
   } else if (operator === '*') {
     return multiply(num1,num2)
   } else if (operator === '/') {
+    if(num2===0) {
+      alert('cannot divide by 0!');
+      return 6969;
+    }
     return divide(num1,num2)
   }
 }
@@ -93,14 +97,27 @@ const operatorPress = function (e) {
 
 }
 
-const equalPress = function (e) {
+const countDecimals = function(number) {
+  if(Math.floor(number.valueOf())===number.valueOf()) {
+    return 0;
+  }
+  return number.toString().split('.')[1].length || 0;
+}
 
-  const result = operate(operator, num1, num2)
-  displayValue = undefined
-  num1 = result;
-  num2 = undefined;
-  display.innerHTML = '' + result;;
-  operator = undefined;
+const equalPress = function (e) {
+  if(num1 && num2 && operator) {
+    let result = operate(operator, num1, num2)
+    const decimalCount = countDecimals(result);
+    if(decimalCount >= 4) {
+      result = Number(result.toFixed(3))
+    }
+    displayValue = undefined
+    num1 = result;
+    num2 = undefined;
+    display.innerHTML = '' + result;;
+    operator = undefined;
+  }
+
 }
 
 digits.forEach(function(digit) {
