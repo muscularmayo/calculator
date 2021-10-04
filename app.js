@@ -44,6 +44,7 @@ const display = document.querySelector('#display');
 const equals = document.querySelector('#equals');
 const ac = document.querySelector('#ac');
 const backspace = document.querySelector('#backspace')
+const plusMinus = document.querySelector('#plusMinus')
 
 let displayValue;
 display.innerHTML = '0';
@@ -52,7 +53,31 @@ let num1;
 let num2;
 let operator;
 
+const plusMinusPress = function (e) {
+  if (Number(displayValue) === num2) {
+    displayValue = (num2*-1).toString();
+    num2 *= -1
+  } else {
+    displayValue = (num1*-1).toString();
+    num1 *= -1
+  }
+
+  if (displayValue === 'NaN' || displayValue === undefined || displayValue === '') {
+    displayValue = '0'
+  }
+
+  display.innerHTML = displayValue;
+}
+
 const digitPress = function (e) {
+  if(e.target.value === '.') {
+    if (displayValue === undefined || displayValue === '0') {
+      displayValue = '0'
+    } else if (displayValue.indexOf('.') !== -1) {
+      return;
+    }
+  }
+
   if (displayValue === undefined) { //only for first press or after clear
     displayValue = e.target.value;
   } else if (displayValue) {
@@ -82,6 +107,9 @@ const backspacePress = function (e) {
     displayValue = displayValue.slice(0,-1);
 
   }
+  if (displayValue === 'NaN' || displayValue === '') {
+    displayValue = '0';
+  }
   display.innerHTML = displayValue;
 }
 
@@ -99,7 +127,7 @@ const clear = function (e) {
 
 const operatorPress = function (e) {
 
-  if (num1 && num2 && operator) {
+  if ((num1 && num2 && operator) !== undefined) {
     let result = operate(operator, num1, num2)
     result = decimalHandler(result)
     displayValue = undefined
@@ -117,7 +145,7 @@ const operatorPress = function (e) {
 
 
 const equalPress = function (e) {
-  if(num1 && num2 && operator) {
+  if((num1 && num2 && operator) !== undefined) {
     let result = operate(operator, num1, num2)
     result = decimalHandler(result);
 
@@ -155,6 +183,8 @@ operators.forEach(function(operator) {
 equals.addEventListener('click', equalPress)
 
 backspace.addEventListener('click', backspacePress)
+
+plusMinus.addEventListener('click', plusMinusPress)
 
 
 
