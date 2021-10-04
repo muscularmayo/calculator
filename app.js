@@ -43,13 +43,14 @@ const digits = document.querySelectorAll('.digit');
 const display = document.querySelector('#display');
 const equals = document.querySelector('#equals');
 const ac = document.querySelector('#ac');
+const backspace = document.querySelector('#backspace')
+
 let displayValue;
 display.innerHTML = '0';
 
 let num1;
 let num2;
 let operator;
-
 
 const digitPress = function (e) {
   if (displayValue === undefined) { //only for first press or after clear
@@ -58,12 +59,7 @@ const digitPress = function (e) {
     displayValue = displayValue + e.target.value
   }
 
-/* technically i don't need this, i can save num1 on 1st operator press
-  if (num1 === undefined && operator === undefined) {
-    num1 = Number(displayValue)
-  } else {
-    num2 = Number(displayValue)
-  }*/
+
   if (num1 === undefined || operator === undefined) {
     num1 = Number(displayValue)
   } else {
@@ -73,6 +69,23 @@ const digitPress = function (e) {
   display.innerHTML = displayValue;
 }
 
+const backspacePress = function (e) {
+  if (displayValue !== undefined && num1) {
+    num1 = Number(num1.toString().slice(0, -1))
+    displayValue = num1.toString();
+  } else if (displayValue && num1 && num2===undefined) {
+    displayValue = displayValue.slice(0,-1)
+  } else if (displayValue === undefined && num1) {
+    num1 = Number(num1.toString().slice(0, -1))
+    displayValue = num1.toString();
+  } else {
+    displayValue = displayValue.slice(0,-1);
+
+  }
+  display.innerHTML = displayValue;
+}
+
+
 const clear = function (e) {
   num1 = undefined;
   num2 = undefined;
@@ -81,10 +94,14 @@ const clear = function (e) {
   display.innerHTML = '0';
 }
 
+
+
+
 const operatorPress = function (e) {
 
   if (num1 && num2 && operator) {
-    const result = operate(operator, num1, num2)
+    let result = operate(operator, num1, num2)
+    result = decimalHandler(result)
     displayValue = undefined
     num1 = result;
     num2 = undefined;
@@ -97,20 +114,13 @@ const operatorPress = function (e) {
 
 }
 
-const countDecimals = function(number) {
-  if(Math.floor(number.valueOf())===number.valueOf()) {
-    return 0;
-  }
-  return number.toString().split('.')[1].length || 0;
-}
+
 
 const equalPress = function (e) {
   if(num1 && num2 && operator) {
     let result = operate(operator, num1, num2)
-    const decimalCount = countDecimals(result);
-    if(decimalCount >= 4) {
-      result = Number(result.toFixed(3))
-    }
+    result = decimalHandler(result);
+
     displayValue = undefined
     num1 = result;
     num2 = undefined;
@@ -118,6 +128,18 @@ const equalPress = function (e) {
     operator = undefined;
   }
 
+}
+
+const decimalHandler = function(number) {
+  let result = number;
+  if(Math.floor(number.valueOf())===number.valueOf()) {
+    return number;
+  }
+  const decimalCount = number.toString().split('.')[1].length || 0;
+  if(decimalCount >= 4) {
+    result = Number(result.toFixed(3))
+  }
+  return result;
 }
 
 digits.forEach(function(digit) {
@@ -132,7 +154,7 @@ operators.forEach(function(operator) {
 
 equals.addEventListener('click', equalPress)
 
-
+backspace.addEventListener('click', backspacePress)
 
 
 
